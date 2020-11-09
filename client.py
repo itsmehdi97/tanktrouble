@@ -1,0 +1,84 @@
+import pygame 
+from network import Network
+
+from helpers import read_pos, write_pos
+
+width = 500
+height = 500
+
+win = pygame.display.set_mode((width, height))
+
+client_number = 0
+
+
+class Player:
+    def __init__(self, x, y, width, height, color):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.color = color
+        self.vel = 3
+
+    def update(self):
+        self.rect = (self.x, self.y, self.width, self.height)
+
+    def draw(self, win):
+        pygame.draw.rect(win, self.color, self.rect)
+    
+    def move(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_LEFT]:
+            self.x -= self.vel
+
+        if keys[pygame.K_RIGHT]:
+            self.x += self.vel
+        
+        if keys[pygame.K_UP]:
+            self.y -= self.vel
+        
+        if keys[pygame.K_DOWN]:
+            self.y += self.vel
+
+        self.update()
+
+
+def redrawWindow(win, *players):
+    win.fill((255, 255, 255))
+    players[0].move()
+    for player in players:
+        player.draw(win)
+
+    pygame.display.update()
+
+
+def main():
+    run = True
+    n = Network()
+    startPos = read_pos(n.getPos())
+    p = Player(startPos[0], startPos[1], 50, 50, (0, 255, 0))
+    p2 = Player(0, 0, 50, 50, (0, 255, 0))
+
+    clock = pygame.time.Clock()
+
+    while run:
+        clock.tick(60)
+
+        p2Pos = read_pos(n.send(write_pos((p.x, p.y))))
+        p2.x = p2Pos[0]
+        p2.y  = p2Pos[1]
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+        
+
+        p2.update()
+        redrawWindow(win, p, p2)
+        
+
+
+if __name__ == '__main__':
+    main()
