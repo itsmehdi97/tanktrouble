@@ -27,9 +27,16 @@ def main():
     
     clock = pygame.time.Clock()
 
-
+    # img = pygame.image.load('tank1.png')
+    # r = img.get_rect()
+    # print(r)
 
     while run:
+        # img = pygame.image.load('tank1.png')
+        # r = img.get_rect()
+        # win.blit(img, r)
+        # print(r)
+
         clock.tick(60)
 
         p2 = n.send(p)
@@ -43,8 +50,8 @@ def main():
                 if event.key == pygame.K_SPACE:
                     p.fire()
 
-        p.move()
         p.check_bullet_collision(p2)
+        p.move()
         redrawWindow(win, p, p2)
         
 
