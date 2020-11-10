@@ -44,7 +44,7 @@ def main():
                     p.fire()
 
         p.move()
-        p.check_bullet_collision(p2.bullets)
+        p.check_bullet_collision(p2)
         redrawWindow(win, p, p2)
         
 

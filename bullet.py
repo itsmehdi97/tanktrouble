@@ -15,6 +15,8 @@ class Bullet:
         self.direction = direction
 
         self.hit_wall = False
+        self.active = True
+
 
     def move(self):
         self.y += self.vel * math.sin(math.radians(self.direction))
@@ -22,4 +24,8 @@ class Bullet:
 
     def draw(self, win):
         self.rect = pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
+
+    def inactive(self):
+        self.active = False
+    
     

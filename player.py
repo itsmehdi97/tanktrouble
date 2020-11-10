@@ -35,15 +35,21 @@ class Player:
         for b in self.bullets:
             b.move()
 
+    def validate_bullets(self):
+        for b in self.bullets:
+            if time.time() - b.fired_at >= 5:
+                b.inactive()
+
     def draw(self, win):
         pygame.draw.rect(win, self.color, self.rect)
-        self.remove_expired_bullets()
+        self.validate_bullets()
+        self.remove_inactive_bullets()
         self.draw_bullets(win)
     
-    def remove_expired_bullets(self):
+    def remove_inactive_bullets(self):
         valid_bullets = []
         for b in self.bullets:
-            if time.time() - b.fired_at <= 5:
+            if b.active:
                 valid_bullets.append(b)
             else:
                 self.remain_bullets += 1
@@ -83,24 +89,25 @@ class Player:
             self.remain_bullets -= 1
             return bullet
 
-    def check_bullet_collision(self, other_bullets):
+    def check_bullet_collision(self, opponent):
+        if len(opponent.bullets):
+            for b in opponent.bullets:
+                if self.has_contact(b, self.center, self.width):
+                    self.width -= 5
+                    self.height -= 5
+
+                    if self.width < 10:
+                        self.alive = False
+
         if len(self.bullets):
             for b in self.bullets:
-                if self.has_contact(b) and b.hit_wall:
-                    self.width -= 5
-                    self.height -= 5
-                    break
+                if self.has_contact(b, opponent.center, opponent.width):
+                    b.inactive()
 
-        elif len(other_bullets):
-            for b in other_bullets:
-                if self.has_contact(b):
-                    self.width -= 5
-                    self.height -= 5
-                    break
-    
-    def has_contact(self, bullet):
+    @staticmethod
+    def has_contact(bullet, center, width):
         distance = math.sqrt(
-            ((self.center[0] - bullet.x) ** 2) +
-            ((self.center[1] - bullet.y) ** 2))
+            ((center[0] - bullet.x) ** 2) +
+            ((center[1] - bullet.y) ** 2))
             
-        return distance < self.width / 2
+        return distance < (width / 2 + bullet.radius + 4)
