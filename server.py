@@ -1,5 +1,7 @@
 import socket
-from _thread import *
+
+import threading
+
 import sys
 import pickle
 
@@ -60,6 +62,8 @@ currentPlayer = 0
 while True:
     conn, addr = s.accept()
     print("Connected to:", addr)
+    
+    client_thread = threading.Thread(target=threaded_client, args=(conn, currentPlayer))
+    client_thread.start()
 
-    start_new_thread(threaded_client, (conn, currentPlayer))
     currentPlayer += 1
