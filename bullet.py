@@ -14,10 +14,12 @@ class Bullet:
         self.vel = 3.5
         self.direction = direction
 
+        self.hit_wall = False
+
     def move(self):
         self.y += self.vel * math.sin(math.radians(self.direction))
         self.x += self.vel * math.cos(math.radians(self.direction))
 
     def draw(self, win):
         self.rect = pygame.draw.circle(win, self.color, (self.x,self.y), self.radius)
-         
+    

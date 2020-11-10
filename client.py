@@ -3,7 +3,6 @@ from network import Network
 
 from player import Player
 from bullet import Bullet
-from helpers import read_pos, write_pos
 
 
 width = 500
@@ -45,6 +44,7 @@ def main():
                     p.fire()
 
         p.move()
+        p.check_bullet_collision(p2.bullets)
         redrawWindow(win, p, p2)
         
 

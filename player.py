@@ -8,6 +8,8 @@ from bullet import Bullet
 
 class Player:
     def __init__(self, x, y, width, height, color):
+        self.alive = True
+
         self.x = x
         self.y = y
         self.width = width
@@ -21,6 +23,10 @@ class Player:
         
         self.remain_bullets = 5
         self.bullets = []
+
+    @property
+    def center(self):
+        return (self.x + self.width/2, self.y + self.height/2)    
 
     def update(self):
         self.rect = (self.x, self.y, self.width, self.height)
@@ -37,7 +43,7 @@ class Player:
     def remove_expired_bullets(self):
         valid_bullets = []
         for b in self.bullets:
-            if time.time() - b.fired_at <= 5 :
+            if time.time() - b.fired_at <= 5:
                 valid_bullets.append(b)
             else:
                 self.remain_bullets += 1
@@ -76,3 +82,25 @@ class Player:
             self.bullets.append(bullet)
             self.remain_bullets -= 1
             return bullet
+
+    def check_bullet_collision(self, other_bullets):
+        if len(self.bullets):
+            for b in self.bullets:
+                if self.has_contact(b) and b.hit_wall:
+                    self.width -= 5
+                    self.height -= 5
+                    break
+
+        elif len(other_bullets):
+            for b in other_bullets:
+                if self.has_contact(b):
+                    self.width -= 5
+                    self.height -= 5
+                    break
+    
+    def has_contact(self, bullet):
+        distance = math.sqrt(
+            ((self.center[0] - bullet.x) ** 2) +
+            ((self.center[1] - bullet.y) ** 2))
+            
+        return distance < self.width / 2
