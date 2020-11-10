@@ -1,7 +1,5 @@
 import socket
-
 import threading
-
 import sys
 import pickle
 
@@ -26,8 +24,8 @@ print("Server Started, Waiting for a connection...")
 
 
 players = [
-    Player(0, 0, 50, 50, (255, 0, 0,)),
-    Player(100, 100, 50, 50, (0, 0, 255))
+    Player(0, 0, 35, 35, (255, 0, 0,)),
+    Player(100, 100, 35, 35, (0, 0, 255))
 ]
 
 def threaded_client(conn, player):
