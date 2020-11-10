@@ -1,4 +1,5 @@
 import time
+import math
 
 import pygame
 
@@ -13,7 +14,10 @@ class Player:
         self.height = height
         self.color = color
         self.vel = 3
+        self.rotation_vel = 3
         self.rect = (x, y, width, height)
+
+        self.diretion = 0 # direction in degrees
         
         self.remain_bullets = 5
         self.bullets = []
@@ -48,16 +52,20 @@ class Player:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
-            self.x -= self.vel
+            self.diretion  = (self.diretion - self.rotation_vel) % 360
 
         if keys[pygame.K_RIGHT]:
-            self.x += self.vel
+            self.diretion  = (self.diretion + self.rotation_vel) % 360
         
         if keys[pygame.K_UP]:
-            self.y -= self.vel
+            self.y += self.vel * math.sin(math.radians(self.diretion))
+            self.x += self.vel * math.cos(math.radians(self.diretion))
+
         
         if keys[pygame.K_DOWN]:
-            self.y += self.vel
+            self.y -= self.vel * math.sin(math.radians(self.diretion))
+            self.x -= self.vel * math.cos(math.radians(self.diretion))
+
 
         self.update()
         self.move_bullets()
