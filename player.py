@@ -17,7 +17,7 @@ class Player:
         self.rotation_vel = 3
         self.rect = (x, y, width, height)
 
-        self.diretion = 0 # direction in degrees
+        self.direction = 0 # direction in degrees
         
         self.remain_bullets = 5
         self.bullets = []
@@ -52,19 +52,19 @@ class Player:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT]:
-            self.diretion  = (self.diretion - self.rotation_vel) % 360
+            self.direction  = (self.direction - self.rotation_vel) % 360
 
         if keys[pygame.K_RIGHT]:
-            self.diretion  = (self.diretion + self.rotation_vel) % 360
+            self.direction  = (self.direction + self.rotation_vel) % 360
         
         if keys[pygame.K_UP]:
-            self.y += self.vel * math.sin(math.radians(self.diretion))
-            self.x += self.vel * math.cos(math.radians(self.diretion))
+            self.y += self.vel * math.sin(math.radians(self.direction))
+            self.x += self.vel * math.cos(math.radians(self.direction))
 
         
         if keys[pygame.K_DOWN]:
-            self.y -= self.vel * math.sin(math.radians(self.diretion))
-            self.x -= self.vel * math.cos(math.radians(self.diretion))
+            self.y -= self.vel * math.sin(math.radians(self.direction))
+            self.x -= self.vel * math.cos(math.radians(self.direction))
 
 
         self.update()
@@ -72,7 +72,7 @@ class Player:
 
     def fire(self):
         if self.remain_bullets > 0:
-            bullet = Bullet(self.x, self.y)
+            bullet = Bullet(self.x + self.width, self.y + self.height/2, self.direction)
             self.bullets.append(bullet)
             self.remain_bullets -= 1
             return bullet
