@@ -2,7 +2,9 @@ import pygame
 from network import Network
 
 from player import Player
+from bullet import Bullet
 from helpers import read_pos, write_pos
+
 
 width = 500
 height = 500
@@ -11,7 +13,7 @@ win = pygame.display.set_mode((width, height))
 
 
 def redrawWindow(win, *players):
-    win.fill((255, 255, 255))
+    win.fill((0, 0, 0))
     
     for player in players:
         player.draw(win)
@@ -26,6 +28,8 @@ def main():
     
     clock = pygame.time.Clock()
 
+
+
     while run:
         clock.tick(60)
 
@@ -35,7 +39,10 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
-        
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    p.fire()
 
         p.move()
         redrawWindow(win, p, p2)
