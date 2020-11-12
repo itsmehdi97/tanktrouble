@@ -3,21 +3,25 @@ from network import Network
 
 from player import Player
 from bullet import Bullet
+from wall import Wall
 
 
 width = 500
-height = 500
+height = 300
 
 win = pygame.display.set_mode((width, height))
 
 
+def init_walls():
+    return [Wall(pair[0], pair[1]) for pair in [[(2,2),(498,2)], [(498,2),(498,298)], [(2,298),(498,298)], [(2,2),(2,298)]]]
+
+walls = init_walls()
+
 def redrawWindow(win, *players):
     win.fill((0, 0, 0))
-    
     for player in players:
         player.draw(win)
-
-    pygame.display.update()
+    
 
 
 def main():
@@ -27,16 +31,7 @@ def main():
     
     clock = pygame.time.Clock()
 
-    # img = pygame.image.load('tank1.png')
-    # r = img.get_rect()
-    # print(r)
-
     while run:
-        # img = pygame.image.load('tank1.png')
-        # r = img.get_rect()
-        # win.blit(img, r)
-        # print(r)
-
         clock.tick(60)
 
         p2 = n.send(p)
@@ -51,8 +46,14 @@ def main():
                     p.fire()
 
         p.check_bullet_collision(p2)
-        p.move()
+        p.rotate()
+        p.move(walls)
         redrawWindow(win, p, p2)
+
+        for wall in walls:
+            wall.draw(win)
+            
+        pygame.display.update()
         
 
 

@@ -24,8 +24,8 @@ print("Server Started, Waiting for a connection...")
 
 
 players = [
-    Player(0, 0, 35, 35, (255, 0, 0,)),
-    Player(100, 100, 35, 35, (0, 0, 255))
+    Player(10, 10, 20, 20, (255, 0, 0,)),
+    Player(100, 100, 20, 20, (0, 0, 255))
 ]
 
 def threaded_client(conn, player):
@@ -49,8 +49,9 @@ def threaded_client(conn, player):
 
             conn.sendall(pickle.dumps(reply))
 
-        except Exception as e:
-            print(e)
+        except EOFError as e:
+            sys.exit()
+
         
     print("Lost connection")
     conn.close()
