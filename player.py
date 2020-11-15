@@ -153,5 +153,5 @@ class Player:
         distance = math.sqrt(
             ((center[0] - bullet.x) ** 2) +
             ((center[1] - bullet.y) ** 2))
-            
+             
         return distance < (width / 2 + bullet.radius + 4)
