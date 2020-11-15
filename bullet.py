@@ -18,7 +18,6 @@ class Bullet:
 
         self.hit_wall = False
         self.active = True
-
         self.px = None # previous x value
         self.py = None # previous y value
 

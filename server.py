@@ -6,7 +6,7 @@ import pickle
 from player import Player
 
 
-server = "127.0.0.1"
+server = "localhost"
 port = 5555
 
 
